@@ -6,7 +6,7 @@
 /*   By: kodokai <kodokai.featheur@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:43:09 by kodokai           #+#    #+#             */
-/*   Updated: 2023/10/19 23:13:01 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/20 23:06:19 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	*ft_strpbrk(const char *s, const char *seps);
 char	*ft_strsep(const char *s, const char sep);
 
 int		ft_atoi(const char *nptr);
+int		ft_strtoi(const char *nptr, char **endptr);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
 char	*ft_strndup(const char *s, size_t n);

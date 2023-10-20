@@ -1,29 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strpbrk.c                                       :+:      :+:    :+:   */
+/*   ft_strtoi.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/21 01:25:08 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 00:46:40 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strpbrk(const char *s, const char *charset)
+int	ft_strtoi(const char *nptr, char **endptr)
 {
-	size_t	i;
+	int	res;
+	int	sign;
 
-	while (*s)
+	res = 0;
+	while (('\t' <= *nptr && *nptr <= '\r') || *nptr == ' ')
+		nptr++;
+	sign = 1;
+	if (*nptr == '+' || *nptr == '-')
 	{
-		i = 0;
-		while (charset[i] && *s != charset[i])
-			i++;
-		if (charset[i])
-			return ((char *)s);
-		s++;
+		if (*nptr == '-')
+			sign = -1;
+		nptr++;
 	}
-	return (NULL);
+	while ('0' <= *nptr && *nptr <= '9')
+	{
+		res *= 10;
+		res += *nptr - '0';
+		nptr++;
+	}
+	if (endptr)
+		*endptr = (char *)nptr;
+	return (res * sign);
 }

@@ -2,17 +2,22 @@ NAME 		= libftprintf.a
 CC 			= gcc
 CFLAGS 		= -Wall -Wextra -Werror
 LIB 		= libft/libft.a
-SRC 		= $(wildcard *.c)
+SRC 		= ft_parsing.c\
+			  ft_printf.c
 OBJ 		= $(SRC:.c=.o)
 
 all: $(NAME)
+
+test: $(NAME)
+	gcc main.c $(NAME)
 
 debug:
 	$(eval CFLAGS += -g)
 	$(MAKE) all
 
 $(NAME): $(OBJ) $(LIB)
-	ar crs $(NAME) $(OBJ) $(LIB)
+	cp $(LIB) $(NAME)
+	ar rs $(NAME) $(OBJ)
 
 $(LIB): 
 	$(MAKE) -C $$(dirname $@)
@@ -21,7 +26,7 @@ $(LIB):
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	for lib in $$(dirname $(LIB)); do $(MAKE) clean -C $$lib; done
+	$(MAKE) clean -C $$(dirname $(LIB));
 	rm -f $(OBJ)
 
 fclean: clean
