@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_putunbr_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/21 16:01:47 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 16:04:59 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strmapi(char const *s, char (*f)(size_t, char))
+void	ft_putunbr_fd(t_uint n, int fd)
 {
-	size_t	len;
-	char	*dst;
-
-	len = ft_strlen(s);
-	dst = malloc(len + 1);
-	if (dst)
-	{
-		dst[len] = 0;
-		while (len--)
-			dst[len] = (*f)(len, s[len]);
-	}
-	return (dst);
+	if (n / 10)
+		ft_putunbr_fd(n / 10, fd);
+	ft_putchar_fd('0' + n % 10, fd);
 }

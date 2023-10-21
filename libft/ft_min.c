@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_min.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/21 16:01:47 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:08:25 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strmapi(char const *s, char (*f)(size_t, char))
+int	ft_min_int(int a, int b)
 {
-	size_t	len;
-	char	*dst;
+	if (a < b)
+		return (a);
+	return (b);
+}
 
-	len = ft_strlen(s);
-	dst = malloc(len + 1);
-	if (dst)
-	{
-		dst[len] = 0;
-		while (len--)
-			dst[len] = (*f)(len, s[len]);
-	}
-	return (dst);
+t_uint	ft_min_uint(t_uint a, t_uint b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
+size_t	ft_min_size_t(size_t a, size_t b)
+{
+	if (a < b)
+		return (a);
+	return (b);
 }

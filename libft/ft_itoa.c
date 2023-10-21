@@ -6,7 +6,7 @@
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/19 16:50:23 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 16:53:11 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_itoa(int n)
 {
 	size_t	i;
-	size_t	len;	
+	t_uint	len;	
 	char	*dst;
 
 	len = ft_intlen(n, 10);

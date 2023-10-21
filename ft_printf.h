@@ -6,7 +6,7 @@
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/21 00:28:49 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:16:16 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,11 @@ typedef enum e_printf_specifier
 
 typedef enum e_printf_flags
 {
-	ft_PRINTF_FLAG_NONE			= 0,
+	FT_PRINTF_FLAG_NONE			= 0,
 	FT_PRINTF_PLUS				= 1,
-	FT_PRINTF_SPACE				= 2,
-	FT_PRINTF_HASH				= 4,
+	FT_PRINTF_MINUS				= 2,
+	FT_PRINTF_SPACE				= 4,
+	FT_PRINTF_HASH				= 8,
 	FT_PRINTF_ZERO				= 16,
 	FT_PRINTF_POINT				= 32
 }	t_printf_flags;
@@ -57,11 +58,23 @@ typedef struct s_printf_format
 	t_printf_var		var;
 	t_printf_flags		flags;
 	t_printf_specifier	specifier;
-	int					width;
-	int					precision;
+	t_uint				var_len;
+	t_uint				width;
+	t_uint				precision;
 }	t_printf_format;
 
-int	ft_printf(const char *str, ...);
-int	ft_printf_parsing(const char *str, va_list *arg_list, t_list **format_list);
+int		ft_printf(const char *str, ...);
+int		ft_printf_parsing(const char *str, va_list *arg);
+int		ft_printf_format(t_printf_format *format);
+
+t_bool	ft_printf_check_flags(t_printf_format *format, t_printf_flags flags);
+t_bool	ft_printf_check_noflags(t_printf_format *format, t_printf_flags flags);
+
+t_uint	ft_printf_width_space(t_printf_format *format);
+t_uint	ft_printf_width_zero(t_printf_format *format);
+t_uint	ft_printf_precision(t_printf_format *format);
+
+t_uint	ft_printf_int(t_printf_format *format);
+t_uint	ft_printf_percentage(t_printf_format *format);
 
 #endif

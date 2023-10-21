@@ -6,7 +6,7 @@
 /*   By: kodokai <kodokai.featheur@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:43:09 by kodokai           #+#    #+#             */
-/*   Updated: 2023/10/20 23:06:19 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 20:09:49 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 # include <unistd.h>
 
 typedef unsigned char	t_byte;
+typedef unsigned int	t_uint;
+
+typedef enum e_bool
+{
+	FT_FALSE	= 0,
+	FT_TRUE		= 1
+}	t_bool;
 
 typedef struct s_list
 {
@@ -27,7 +34,18 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-size_t	ft_intlen(int n, int base);
+t_uint	ft_intlen(int n, int base);
+t_uint	ft_uintlen(t_uint n, int base);
+
+int		ft_min_int(int a, int b);
+t_uint	ft_min_uint(t_uint a, t_uint b);
+size_t	ft_min_size_t(size_t a, size_t b);
+
+int		ft_max_int(int a, int b);
+t_uint	ft_max_uint(t_uint a, t_uint b);
+size_t	ft_max_size_t(size_t a, size_t b);
+
+t_uint	ft_abs_int(t_uint n);
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -59,24 +77,25 @@ int		ft_strtoi(const char *nptr, char **endptr);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strdup(const char *s);
 char	*ft_strndup(const char *s, size_t n);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_substr(char const *s, size_t start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+char	*ft_strmapi(char const *s, char (*f)(size_t, char));
+void	ft_striteri(char *s, void (*f)(size_t, char*));
 
 void	ft_putchar_fd(char c, int fd);
 void	ft_putendl_fd(char *s, int fd);
+void	ft_putunbr_fd(t_uint n, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
 
 t_list	*ft_lstnew(void *content);
-void	ft_lstadd_front(t_list **lst, t_list *new);
+void	ft_lstadd_front(t_list **lst, t_list *mew);
 int		ft_lstsize(t_list *lst);
 t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstadd_back(t_list **lst, t_list *mew);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));

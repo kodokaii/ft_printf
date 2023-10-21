@@ -1,7 +1,8 @@
 NAME 		= libft.a
 CC 			= gcc
 CFLAGS 		= -Wall -Wextra -Werror
-SRC 		= ft_atoi.c\
+SRC 		= ft_abs.c\
+			  ft_atoi.c\
 			  ft_bzero.c\
 			  ft_calloc.c\
 			  ft_intlen.c\
@@ -20,15 +21,18 @@ SRC 		= ft_atoi.c\
 			  ft_lstmap.c\
 			  ft_lstnew.c\
 			  ft_lstsize.c\
+			  ft_max.c\
 			  ft_memchr.c\
 			  ft_memcmp.c\
 			  ft_memcpy.c\
 			  ft_memmove.c\
 			  ft_memset.c\
+			  ft_min.c\
 			  ft_putchar_fd.c\
 			  ft_putendl_fd.c\
 			  ft_putnbr_fd.c\
 			  ft_putstr_fd.c\
+			  ft_putunbr_fd.c\
 			  ft_split.c\
 			  ft_strchr.c\
 			  ft_strdup.c\
@@ -44,11 +48,12 @@ SRC 		= ft_atoi.c\
 			  ft_strpbrk.c\
 			  ft_strrchr.c\
 			  ft_strsep.c\
-			  ft_strtrim.c\
 			  ft_strtoi.c\
+			  ft_strtrim.c\
 			  ft_substr.c\
 			  ft_tolower.c\
-			  ft_toupper.c
+			  ft_toupper.c\
+			  ft_uintlen.c
 OBJ 		= $(SRC:.c=.o)
 
 all: $(NAME)

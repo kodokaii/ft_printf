@@ -2,7 +2,10 @@ NAME 		= libftprintf.a
 CC 			= gcc
 CFLAGS 		= -Wall -Wextra -Werror
 LIB 		= libft/libft.a
-SRC 		= ft_parsing.c\
+SRC 		= ft_integer.c\
+			  ft_option.c\
+			  ft_other.c\
+			  ft_parsing.c\
 			  ft_printf.c
 OBJ 		= $(SRC:.c=.o)
 

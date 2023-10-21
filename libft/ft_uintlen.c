@@ -1,29 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_uintlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/21 16:01:47 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 17:03:57 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strmapi(char const *s, char (*f)(size_t, char))
+t_uint	ft_uintlen(t_uint n, int base)
 {
-	size_t	len;
-	char	*dst;
+	t_uint	len;
 
-	len = ft_strlen(s);
-	dst = malloc(len + 1);
-	if (dst)
+	len = 1;
+	while (n / base)
 	{
-		dst[len] = 0;
-		while (len--)
-			dst[len] = (*f)(len, s[len]);
+		n /= base;
+		len++;
 	}
-	return (dst);
+	return (len);
 }
