@@ -2,14 +2,18 @@ NAME 		= libftprintf.a
 CC 			= gcc
 CFLAGS 		= -Wall -Wextra -Werror
 LIB 		= libft/libft.a
-SRC 		= ft_integer.c\
+SRC 		= ft_check.c\
+			  ft_hexa.c\
+			  ft_integer.c\
 			  ft_option.c\
-			  ft_other.c\
 			  ft_parsing.c\
+			  ft_pointer.c\
 			  ft_printf.c
 OBJ 		= $(SRC:.c=.o)
 
 all: $(NAME)
+
+bonus: $(NAME)
 
 test: $(NAME)
 	gcc main.c $(NAME)

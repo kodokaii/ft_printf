@@ -6,7 +6,7 @@
 /*   By: kodokai <kodokai.featheur@gmail.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 13:43:09 by kodokai           #+#    #+#             */
-/*   Updated: 2023/10/21 20:09:49 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/22 02:41:53 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 # include <errno.h>
 # include <unistd.h>
 
-typedef unsigned char	t_byte;
-typedef unsigned int	t_uint;
+typedef unsigned char		t_byte;
+typedef unsigned int		t_uint;
+typedef unsigned long long	t_llu;
 
 typedef enum e_bool
 {
@@ -34,8 +35,10 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+t_uint	ft_bytelen(t_byte n, t_byte base);
 t_uint	ft_intlen(int n, int base);
 t_uint	ft_uintlen(t_uint n, int base);
+t_uint	ft_llulen(t_llu n, int base);
 
 int		ft_min_int(int a, int b);
 t_uint	ft_min_uint(t_uint a, t_uint b);
@@ -45,6 +48,7 @@ int		ft_max_int(int a, int b);
 t_uint	ft_max_uint(t_uint a, t_uint b);
 size_t	ft_max_size_t(size_t a, size_t b);
 
+t_byte	ft_abs_char(t_byte n);
 t_uint	ft_abs_int(t_uint n);
 
 int		ft_isalpha(int c);
@@ -86,10 +90,16 @@ char	*ft_strmapi(char const *s, char (*f)(size_t, char));
 void	ft_striteri(char *s, void (*f)(size_t, char*));
 
 void	ft_putchar_fd(char c, int fd);
-void	ft_putendl_fd(char *s, int fd);
-void	ft_putunbr_fd(t_uint n, int fd);
-void	ft_putnbr_fd(int n, int fd);
 void	ft_putstr_fd(char *s, int fd);
+void	ft_putstrn_fd(char *s, size_t n, int fd);
+void	ft_putendl_fd(char *s, int fd);
+
+void	ft_putuint_fd(t_uint n, int fd);
+void	ft_putint_fd(int n, int fd);
+
+void	ft_putint_base_fd(int n, char *base, int fd);
+void	ft_putuint_base_fd(t_uint n, char *base, int fd);
+void	ft_putllu_base_fd(t_llu n, char *base, int fd);
 
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *mew);

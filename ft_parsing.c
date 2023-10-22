@@ -6,7 +6,7 @@
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/21 20:15:38 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/21 22:02:26 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static char	*ft_get_format(const char *str,
 	char	*current;
 
 	current = (char *)str + 1;
-	while (ft_strchr(FT_PRINTF_FLAGS, *current))
+	while (ft_strchr(FT_PRINTF_FLAGS, *current) && *current)
 		format->flags |= ft_get_flags(*current++);
 	if (*current == '*' && current++)
 		format->width = va_arg(*arg_list, int);
@@ -91,7 +91,7 @@ static char	*ft_get_format(const char *str,
 			format->precision = ft_strtoi(current, &current);
 	}
 	format->specifier = ft_get_specifier(*current);
-	if (ft_strchr(FT_PRINTF_SPECIFIER, *current))
+	if (ft_strchr(FT_PRINTF_SPECIFIER, *current) && *current)
 	{
 		format->var = ft_get_var(format->specifier, arg_list);
 		return (current);
