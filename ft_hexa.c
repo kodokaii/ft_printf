@@ -6,7 +6,7 @@
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/22 03:22:11 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/22 23:32:39 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,51 @@
 
 #define FLAGS	ft_printf_check_flags
 #define NFLAGS	ft_printf_check_noflags
+#define STATE	ft_printf_check_state
+#define NSTATE	ft_printf_check_nostate
 
-t_uint	ft_printf_hexa_low(t_printf_format *format)
+void	ft_printf_hexa_low(t_printf_format *format)
 {
-	t_uint	n;
-	t_uint	total_len;
+	t_uint	x;
+	t_bool	display;
 
-	total_len = 0;
-	n = format->var.x;
-	format->var_len = ft_uintlen(n, 16);
-	format->prefix_len = 2 * (FLAGS(format, FT_PRINTF_HASH) && n);
-	if (NFLAGS(format, FT_PRINTF_ZERO) || FLAGS(format, FT_PRINTF_POINT))
-		total_len += ft_printf_left_width_space(format);
-	if (FLAGS(format, FT_PRINTF_HASH) && n)
-		ft_putstr_fd("0x", 1);
-	total_len += ft_printf_width_zero(format);
-	total_len += ft_printf_precision(format);
-	if (n || NFLAGS(format, FT_PRINTF_POINT) || format->precision)
-		ft_putuint_base_fd(n, "0123456789abcdef", 1);
-	total_len += ft_printf_right_width_space(format);
-	total_len += format->var_len + format->prefix_len;
-	return (total_len);
+	x = format->var.u;
+	display = (x || NFLAGS(format, PRINTF_POINT) || format->precision);
+	format->state = PRINTF_PREFIX_HASH
+		| PRINTF_WIDTH_SPACE
+		| PRINTF_WIDTH_ZERO
+		| PRINTF_PRECISION
+		| PRINTF_DISPLAY * display;
+	ft_printf_init_len(format, ft_uintlen(x, 16));
+	if (x)
+		ft_printf_init_prefix(format, "0x");
+	else
+		ft_printf_init_prefix(format, "");
+	ft_printf_after_var(format);
+	if (display)
+		ft_putuint_base_fd(x, "0123456789abcdef", 1);
+	ft_printf_before_var(format);
 }
 
-t_uint	ft_printf_hexa_up(t_printf_format *format)
+void	ft_printf_hexa_up(t_printf_format *format)
 {
-	t_uint	n;
-	t_uint	total_len;
+	t_uint	x;
+	t_bool	display;
 
-	total_len = 0;
-	n = format->var.x;
-	format->var_len = ft_uintlen(n, 16);
-	format->prefix_len = 2 * (FLAGS(format, FT_PRINTF_HASH) && n);
-	if (NFLAGS(format, FT_PRINTF_ZERO) || FLAGS(format, FT_PRINTF_POINT))
-		total_len += ft_printf_left_width_space(format);
-	if (FLAGS(format, FT_PRINTF_HASH) && n)
-		ft_putstr_fd("0X", 1);
-	total_len += ft_printf_width_zero(format);
-	total_len += ft_printf_precision(format);
-	if (n || NFLAGS(format, FT_PRINTF_POINT) || format->precision)
-		ft_putuint_base_fd(n, "0123456789ABCDEF", 1);
-	total_len += ft_printf_right_width_space(format);
-	total_len += format->var_len + format->prefix_len;
-	return (total_len);
+	x = format->var.u;
+	display = (x || NFLAGS(format, PRINTF_POINT) || format->precision);
+	format->state = PRINTF_PREFIX_HASH
+		| PRINTF_WIDTH_SPACE
+		| PRINTF_WIDTH_ZERO
+		| PRINTF_PRECISION
+		| PRINTF_DISPLAY * display;
+	ft_printf_init_len(format, ft_uintlen(x, 16));
+	if (x)
+		ft_printf_init_prefix(format, "0X");
+	else
+		ft_printf_init_prefix(format, "");
+	ft_printf_after_var(format);
+	if (display)
+		ft_putuint_base_fd(x, "0123456789ABCDEF", 1);
+	ft_printf_before_var(format);
 }

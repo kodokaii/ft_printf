@@ -6,7 +6,7 @@
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/22 03:36:27 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/22 21:37:33 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,76 +15,62 @@
 #define FLAGS	ft_printf_check_flags
 #define NFLAGS	ft_printf_check_noflags
 
-t_uint	ft_printf_char(t_printf_format *format)
+void	ft_printf_char(t_printf_format *format)
 {
-	t_byte	n;
-	t_uint	total_len;
+	char	c;
 
-	total_len = 0;
-	n = ft_abs_char(format->var.c);
-	format->var_len = 1;
-	total_len += ft_printf_left_width_space(format);
-	ft_putchar_fd(n, 1);
-	total_len += ft_printf_right_width_space(format);
-	total_len += format->var_len + format->prefix_len;
-	return (total_len);
+	c = format->var.c;
+	format->state = PRINTF_WIDTH_SPACE | PRINTF_DISPLAY;
+	ft_printf_init_len(format, 1);
+	ft_printf_init_prefix(format, "");
+	ft_printf_after_var(format);
+	ft_putchar_fd(c, 1);
+	ft_printf_before_var(format);
 }
 
-t_uint	ft_printf_int(t_printf_format *format)
+void	ft_printf_int(t_printf_format *format)
 {
-	t_uint	n;
-	t_uint	total_len;
+	int		n;
+	t_bool	display;
 
-	total_len = 0;
-	n = ft_abs_int(format->var.i);
-	format->var_len = ft_uintlen(n, 10);
-	format->prefix_len = (format->var.i < 0)
-		|| FLAGS(format, FT_PRINTF_PLUS) || ft_printf_space(format);
-	if (NFLAGS(format, FT_PRINTF_ZERO) || FLAGS(format, FT_PRINTF_POINT))
-		total_len += ft_printf_left_width_space(format);
-	if (0 <= format->var.i && FLAGS(format, FT_PRINTF_PLUS))
-		ft_putchar_fd('+', 1);
-	if (format->var.i < 0)
-		ft_putchar_fd('-', 1);
-	total_len += ft_printf_width_zero(format);
-	total_len += ft_printf_precision(format);
-	if (n || NFLAGS(format, FT_PRINTF_POINT) || format->precision)
-		ft_putuint_fd(n, 1);
-	else
-		format->var_len = 0;
-	total_len += ft_printf_right_width_space(format);
-	total_len += format->var_len + format->prefix_len;
-	return (total_len);
+	n = format->var.i;
+	display = (n || NFLAGS(format, PRINTF_POINT) || format->precision);
+	format->state = PRINTF_PREFIX
+		| PRINTF_WIDTH_SPACE
+		| PRINTF_WIDTH_ZERO
+		| PRINTF_PRECISION
+		| PRINTF_NEGATIVE * (n < 0)
+		| PRINTF_DISPLAY * display;
+	ft_printf_init_len(format, ft_uintlen(ft_abs_int(n), 10));
+	ft_printf_init_prefix(format, "");
+	ft_printf_after_var(format);
+	if (display)
+		ft_putuint_fd(ft_abs_int(n), 1);
+	ft_printf_before_var(format);
 }
 
-t_uint	ft_printf_uint(t_printf_format *format)
+void	ft_printf_uint(t_printf_format *format)
 {
 	t_uint	n;
-	t_uint	total_len;
+	t_bool	display;
 
-	total_len = 0;
 	n = format->var.u;
-	format->var_len = ft_uintlen(n, 10);
-	format->prefix_len = FLAGS(format, FT_PRINTF_PLUS)
-		|| ft_printf_space(format);
-	if (NFLAGS(format, FT_PRINTF_ZERO) || FLAGS(format, FT_PRINTF_POINT))
-		total_len += ft_printf_left_width_space(format);
-	if (FLAGS(format, FT_PRINTF_PLUS))
-		ft_putchar_fd('+', 1);
-	total_len += ft_printf_width_zero(format);
-	total_len += ft_printf_precision(format);
-	if (n || NFLAGS(format, FT_PRINTF_POINT) || format->precision)
+	display = (n || NFLAGS(format, PRINTF_POINT) || format->precision);
+	format->state = PRINTF_PREFIX
+		| PRINTF_WIDTH_SPACE
+		| PRINTF_WIDTH_ZERO
+		| PRINTF_PRECISION
+		| PRINTF_DISPLAY * display;
+	ft_printf_init_len(format, ft_uintlen(n, 10));
+	ft_printf_init_prefix(format, "");
+	ft_printf_after_var(format);
+	if (display)
 		ft_putuint_fd(n, 1);
-	else
-		format->var_len = 0;
-	total_len += ft_printf_right_width_space(format);
-	total_len += format->var_len + format->prefix_len;
-	return (total_len);
+	ft_printf_before_var(format);
 }
 
-t_uint	ft_printf_percentage(t_printf_format *format)
+void	ft_printf_percentage(t_printf_format *format)
 {
-	(void)format;
+	format->total_len = 1;
 	ft_putchar_fd('%', 1);
-	return (1);
 }

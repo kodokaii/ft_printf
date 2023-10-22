@@ -6,7 +6,7 @@
 /*   By: nlaerema <nlaerema@student.42lehavre.fr>	+#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:58:17 by nlaerema          #+#    #+#             */
-/*   Updated: 2023/10/22 01:07:25 by nlaerema         ###   ########.fr       */
+/*   Updated: 2023/10/22 23:02:24 by nlaerema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,50 @@
 
 #define FLAGS	ft_printf_check_flags
 #define NFLAGS	ft_printf_check_noflags
+#define STATE	ft_printf_check_state
+#define NSTATE	ft_printf_check_nostate
 
-t_uint	ft_printf_space(t_printf_format *format)
+void	ft_printf_init_len(t_printf_format *format, t_uint len)
 {
-	if (format->prefix_len || NFLAGS(format, FT_PRINTF_SPACE))
-		return (0);
-	ft_putchar_fd(' ', 1);
-	return (1);
+	if (STATE(format, PRINTF_DISPLAY))
+		format->var_len = len;
+	format->total_len += format->var_len;
 }
 
-t_uint	ft_printf_left_width_space(t_printf_format *format)
+void	ft_printf_init_prefix(t_printf_format *format, char *hash_prefix)
 {
-	t_uint	len;
-	t_uint	var_len;
-
-	len = 0;
-	var_len = ft_max_uint(format->precision, format->var_len)
-		+ format->prefix_len;
-	if (NFLAGS(format, FT_PRINTF_MINUS))
-	{
-		while (var_len + len < format->width)
-		{
-			ft_putchar_fd(' ', 1);
-			len++;
-		}
-	}
-	return (len);
+	if (STATE(format, PRINTF_NEGATIVE) && STATE(format, PRINTF_DISPLAY)
+		&& STATE(format, PRINTF_PREFIX))
+		format->prefix = "-";
+	else if (FLAGS(format, PRINTF_PLUS) && STATE(format, PRINTF_DISPLAY)
+		&& STATE(format, PRINTF_PREFIX))
+		format->prefix = "+";
+	else if (FLAGS(format, PRINTF_SPACE) && STATE(format, PRINTF_DISPLAY)
+		&& STATE(format, PRINTF_PREFIX))
+		format->prefix = " ";
+	else if (FLAGS(format, PRINTF_HASH) && STATE(format, PRINTF_DISPLAY)
+		&& STATE(format, PRINTF_PREFIX_HASH))
+		format->prefix = hash_prefix;
+	else
+		format->prefix = "";
+	format->prefix_len = ft_strlen(format->prefix);
+	format->total_len += format->prefix_len;
 }
 
-t_uint	ft_printf_right_width_space(t_printf_format *format)
+t_uint	ft_printf_width_space(t_printf_format *format)
 {
 	t_uint	len;
-	t_uint	var_len;
+	t_uint	total_len;
 
 	len = 0;
-	var_len = ft_max_uint(format->precision, format->var_len)
-		+ format->prefix_len;
-	if (FLAGS(format, FT_PRINTF_MINUS))
+	total_len = format->var_len;
+	if (STATE(format, PRINTF_PRECISION) && FLAGS(format, PRINTF_POINT))
+		total_len = ft_max_uint(format->precision, total_len);
+	total_len += format->prefix_len;
+	while (total_len + len < format->width)
 	{
-		while (var_len + len < format->width)
-		{
-			ft_putchar_fd(' ', 1);
-			len++;
-		}
+		ft_putchar_fd(' ', 1);
+		len++;
 	}
 	return (len);
 }
@@ -64,18 +65,12 @@ t_uint	ft_printf_right_width_space(t_printf_format *format)
 t_uint	ft_printf_width_zero(t_printf_format *format)
 {
 	t_uint	len;
-	t_uint	var_len;
 
 	len = 0;
-	var_len = format->var_len + format->prefix_len;
-	if (FLAGS(format, FT_PRINTF_ZERO)
-		&& NFLAGS(format, FT_PRINTF_POINT) && NFLAGS(format, FT_PRINTF_MINUS))
+	while (format->var_len + format->prefix_len + len < format->width)
 	{
-		while (var_len + len < format->width)
-		{
-			ft_putchar_fd('0', 1);
-			len++;
-		}
+		ft_putchar_fd('0', 1);
+		len++;
 	}
 	return (len);
 }
@@ -85,13 +80,10 @@ t_uint	ft_printf_precision(t_printf_format *format)
 	t_uint	len;
 
 	len = 0;
-	if (FLAGS(format, FT_PRINTF_POINT))
+	while (format->var_len + len < format->precision)
 	{
-		while (format->var_len + len < format->precision)
-		{
-			ft_putchar_fd('0', 1);
-			len++;
-		}
+		ft_putchar_fd('0', 1);
+		len++;
 	}
 	return (len);
 }

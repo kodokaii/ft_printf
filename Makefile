@@ -15,9 +15,6 @@ all: $(NAME)
 
 bonus: $(NAME)
 
-test: $(NAME)
-	gcc main.c $(NAME)
-
 debug:
 	$(eval CFLAGS += -g)
 	$(MAKE) all
